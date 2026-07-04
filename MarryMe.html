@@ -156,6 +156,71 @@
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
+
+    .heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      animation: float-up 3s ease-out forwards;
+    }
+
+    @keyframes float-up {
+      0% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-300px) translateX(var(--tx)) scale(0.5);
+      }
+    }
+
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      animation: confetti-fall 3s ease-in forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(300px) translateX(var(--tx)) rotate(var(--rotate));
+      }
+    }
+
+    .floating-hearts {
+      position: absolute;
+      font-size: 40px;
+      animation: float 2s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .heart-left {
+      position: absolute;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .heart-right {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   </style>
 </head>
 <body>
@@ -165,7 +230,11 @@
       <span class="pointer"></span>
     </div>
 
-    <div class="message">Will you marry me?</div>
+    <div class="message">
+      Will you marry me?
+      <div class="floating-hearts heart-left">❤️</div>
+      <div class="floating-hearts heart-right">❤️</div>
+    </div>
 
     <div class="elephant right">
       <img src="https://raw.githubusercontent.com/aakashkrishana/Marry-Me/main/elephant-cartoon-character-standing-white-background_1308-154054.jpg.avif" alt="Elephant">
@@ -194,8 +263,39 @@
       audio.play();
     }
 
+    function createConfetti() {
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.innerHTML = '🎉';
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.top = '-10px';
+        confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+        confetti.style.setProperty('--rotate', Math.random() * 720 + 'deg');
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+
+    function createHearts() {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.top = Math.random() * window.innerHeight + 'px';
+        heart.style.setProperty('--tx', (Math.random() - 0.5) * 150 + 'px');
+        document.body.appendChild(heart);
+        
+        setTimeout(() => heart.remove(), 3000);
+      }
+    }
+
     function answerYes() {
       playSong();
+      createConfetti();
+      createHearts();
     }
 
     function answerNo() {
