@@ -146,29 +146,15 @@
     </div>
   </div>
 
+  <audio id="song" style="display: none;">
+    <source src="https://raw.githubusercontent.com/aakashkrishana/Marry-Me/main/Taylor%20Swift%20-%20Love%20Story%20(Taylors%20Version)%20%5BOfficial%20Lyric%20Video%5D.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     function playSong() {
-      const context = new (window.AudioContext || window.webkitAudioContext)();
-      if (context.state === 'suspended') {
-        context.resume();
-      }
-      const notes = [440, 523.25, 659.25, 523.25, 440, 440, 440, 523.25, 523.25, 523.25, 440, 659.25];
-      let time = context.currentTime;
-
-      notes.forEach((frequency) => {
-        const osc = context.createOscillator();
-        const gain = context.createGain();
-        osc.type = 'triangle';
-        osc.frequency.value = frequency;
-        osc.connect(gain);
-        gain.connect(context.destination);
-        gain.gain.setValueAtTime(0.0015, time);
-        gain.gain.exponentialRampToValueAtTime(0.02, time + 0.04);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.32);
-        osc.start(time);
-        osc.stop(time + 0.36);
-        time += 0.38;
-      });
+      const audio = document.getElementById('song');
+      audio.currentTime = 0;
+      audio.play();
     }
 
     function answerYes() {
