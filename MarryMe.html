@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Proposal</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f7e3d8 0%, #e8d0c4 100%);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #5b473a;
+    }
+
+    .scene {
+      width: min(100%, 920px);
+      padding: 30px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      gap: 24px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 28px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.14);
+    }
+
+    .elephant {
+      position: relative;
+      width: 160px;
+      min-width: 160px;
+    }
+
+    .elephant img {
+      width: 100%;
+      display: block;
+    }
+
+    .elephant.left img {
+      transform: scaleX(-1);
+    }
+
+    .pointer {
+      position: absolute;
+      top: 50%;
+      width: 90px;
+      height: 6px;
+      background: #5b473a;
+      border-radius: 3px;
+      transform: translateY(-50%);
+    }
+
+    .elephant.left .pointer {
+      right: -90px;
+    }
+
+    .elephant.left .pointer::after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 12px solid #5b473a;
+    }
+
+    .elephant.right .pointer {
+      left: -90px;
+    }
+
+    .elephant.right .pointer::after {
+      content: "";
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 12px solid #5b473a;
+    }
+
+    .message {
+      font-size: 34px;
+      line-height: 1.1;
+      font-weight: 700;
+      text-align: center;
+      color: #5b473a;
+      padding: 0 10px;
+    }
+
+    .buttons {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      color: #fff;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+    }
+
+    button.yes {
+      background: #e57373;
+    }
+
+    button.no {
+      background: #6d93b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="elephant left">
+      <img src="elephant-cartoon-character-standing-white-background_1308-154054.jpg.avif" alt="Elephant">
+      <span class="pointer"></span>
+    </div>
+
+    <div class="message">Will you marry me?</div>
+
+    <div class="elephant right">
+      <img src="elephant-cartoon-character-standing-white-background_1308-154054.jpg.avif" alt="Elephant">
+      <span class="pointer"></span>
+    </div>
+
+    <div class="buttons">
+      <button class="yes" onclick="answerYes()">Yes</button>
+      <button class="no" onclick="answerNo()">No</button>
+    </div>
+  </div>
+
+  <script>
+    function playSong() {
+      const context = new (window.AudioContext || window.webkitAudioContext)();
+      if (context.state === 'suspended') {
+        context.resume();
+      }
+      const notes = [440, 523.25, 659.25, 523.25, 440, 440, 440, 523.25, 523.25, 523.25, 440, 659.25];
+      let time = context.currentTime;
+
+      notes.forEach((frequency) => {
+        const osc = context.createOscillator();
+        const gain = context.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = frequency;
+        osc.connect(gain);
+        gain.connect(context.destination);
+        gain.gain.setValueAtTime(0.0015, time);
+        gain.gain.exponentialRampToValueAtTime(0.02, time + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.32);
+        osc.start(time);
+        osc.stop(time + 0.36);
+        time += 0.38;
+      });
+    }
+
+    function answerYes() {
+      playSong();
+    }
+
+    function answerNo() {
+      playSong();
+      setTimeout(() => alert("Too bad, we're already married."), 80);
+    }
+  </script>
+</body>
+</html>
