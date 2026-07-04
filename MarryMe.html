@@ -252,13 +252,17 @@
     <div class="image-text-overlay">Married<br>July 09 2022</div>
   </div>
 
-  <audio id="song" style="display: none;">
+  <audio id="yesAudio" style="display: none;">
     <source src="https://raw.githubusercontent.com/aakashkrishana/Marry-Me/main/Taylor%20Swift%20-%20Lover.mp3" type="audio/mpeg">
   </audio>
 
+  <audio id="noAudio" style="display: none;">
+    <source src="https://raw.githubusercontent.com/aakashkrishana/Marry-Me/main/Taylor%20Swift%20-%20Love%20Story%20(Taylors%20Version)%20%5BOfficial%20Lyric%20Video%5D.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
-    function playSong() {
-      const audio = document.getElementById('song');
+    function playSong(songId) {
+      const audio = document.getElementById(songId);
       audio.currentTime = 0;
       audio.play();
     }
@@ -293,13 +297,13 @@
     }
 
     function answerYes() {
-      playSong();
+      playSong('yesAudio');
       createConfetti();
       createHearts();
     }
 
     function answerNo() {
-      playSong();
+      playSong('noAudio');
       setTimeout(() => {
         alert("Too bad, we're already married.");
         setTimeout(() => {
