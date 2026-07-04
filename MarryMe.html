@@ -301,11 +301,14 @@
     function answerNo() {
       playSong();
       setTimeout(() => {
-        const fullscreenImage = document.getElementById('fullscreenImage');
-        const fullscreenImg = document.getElementById('fullscreenImg');
-        fullscreenImg.src = 'https://raw.githubusercontent.com/aakashkrishana/Marry-Me/main/470582388_3005490699599031_4750410066941216994_n.jpg';
-        fullscreenImage.style.display = 'flex';
-      }, 3000);
+        alert("Too bad, we're already married.");
+        setTimeout(() => {
+          const fullscreenImage = document.getElementById('fullscreenImage');
+          const fullscreenImg = document.getElementById('fullscreenImg');
+          fullscreenImg.src = 'https://raw.githubusercontent.com/aakashkrishana/Marry-Me/main/470582388_3005490699599031_4750410066941216994_n.jpg';
+          fullscreenImage.style.display = 'flex';
+        }, 3000);
+      }, 80);
     }
   </script>
 </body>
