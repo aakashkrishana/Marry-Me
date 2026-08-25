@@ -4,39 +4,85 @@
   <meta charset="UTF-8">
   <title>Proposal</title>
   <style>
+    :root {
+      --bg-1: #fff1f6;
+      --bg-2: #ffe1eb;
+      --bg-3: #f9d7db;
+      --card: rgba(255, 255, 255, 0.8);
+      --rose: #d95b7b;
+      --rose-deep: #b74461;
+      --peach: #f6c9cf;
+      --ink: #5b473a;
+      --blue: #7aa3c7;
+      --gold: #f6d27a;
+      --shadow: rgba(120, 60, 80, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #f7e3d8 0%, #e8d0c4 100%);
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.9), transparent 35%),
+        linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 42%, var(--bg-3) 100%);
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color: #5b473a;
+      color: var(--ink);
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto auto 10% -8%;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.65), transparent 60%);
+      border-radius: 50%;
+      filter: blur(10px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::after {
+      inset: 10% -10% auto auto;
+      width: 260px;
+      height: 260px;
     }
 
     .scene {
-      width: min(100%, 920px);
-      padding: 30px;
+      position: relative;
+      z-index: 1;
+      width: min(100%, 980px);
+      padding: 36px 30px 26px;
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
       justify-items: center;
       gap: 24px;
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 28px;
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.14);
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 32px;
+      box-shadow: 0 24px 60px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
     }
 
     .elephant {
       position: relative;
-      width: 160px;
-      min-width: 160px;
+      width: 170px;
+      min-width: 170px;
+      filter: drop-shadow(0 12px 18px rgba(120, 60, 80, 0.1));
     }
 
     .elephant img {
       width: 100%;
       display: block;
+      border-radius: 24px;
     }
 
     .elephant.left img {
@@ -46,15 +92,16 @@
     .pointer {
       position: absolute;
       top: 50%;
-      width: 90px;
+      width: 58px;
       height: 6px;
-      background: #5b473a;
-      border-radius: 3px;
+      background: linear-gradient(90deg, #a96c74, #6d4c58);
+      border-radius: 999px;
       transform: translateY(-50%);
+      box-shadow: 0 0 12px rgba(161, 93, 107, 0.25);
     }
 
     .elephant.left .pointer {
-      right: -90px;
+      right: -58px;
     }
 
     .elephant.left .pointer::after {
@@ -65,11 +112,11 @@
       transform: translateY(-50%);
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
-      border-left: 12px solid #5b473a;
+      border-left: 12px solid #a96c74;
     }
 
     .elephant.right .pointer {
-      left: -90px;
+      left: -58px;
     }
 
     .elephant.right .pointer::after {
@@ -80,16 +127,41 @@
       transform: translateY(-50%);
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
-      border-right: 12px solid #5b473a;
+      border-right: 12px solid #a96c74;
     }
 
     .message {
-      font-size: 34px;
+      position: relative;
+      font-size: clamp(2rem, 3.2vw, 3.5rem);
       line-height: 1.1;
-      font-weight: 700;
+      font-weight: 800;
       text-align: center;
-      color: #5b473a;
-      padding: 0 10px;
+      color: var(--ink);
+      padding: 20px 10px 8px;
+      letter-spacing: -0.04em;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.45);
+    }
+
+    .message-line {
+      position: relative;
+      z-index: 1;
+      display: block;
+      background: linear-gradient(135deg, var(--rose-deep), var(--rose));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 12px;
+      font-size: clamp(0.85rem, 1.5vw, 1.2rem);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(91, 71, 58, 0.8);
     }
 
     .buttons {
@@ -98,31 +170,36 @@
       justify-content: center;
       gap: 18px;
       flex-wrap: wrap;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     button {
-      padding: 14px 28px;
+      padding: 16px 30px;
       border: none;
       border-radius: 999px;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      transition: transform 0.18s ease, background 0.18s ease;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
       color: #fff;
     }
 
     button:hover {
-      transform: translateY(-3px);
+      transform: translateY(-3px) scale(1.02);
+      filter: brightness(1.05);
+    }
+
+    button:active {
+      transform: translateY(0);
     }
 
     button.yes {
-      background: #e57373;
+      background: linear-gradient(135deg, #f08aa3, #d95b7b);
     }
 
     button.no {
-      background: #6d93b9;
+      background: linear-gradient(135deg, #8eb6d8, #6997c0);
     }
 
     #fullscreenImage {
@@ -131,7 +208,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.86);
       display: none;
       align-items: center;
       justify-content: center;
@@ -142,6 +219,8 @@
       max-width: 90%;
       max-height: 90%;
       object-fit: contain;
+      border-radius: 28px;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.4);
     }
 
     .image-text-overlay {
@@ -150,11 +229,12 @@
       left: 50%;
       transform: translateX(-50%);
       color: white;
-      font-size: 36px;
-      font-weight: bold;
+      font-size: clamp(1.6rem, 3vw, 2.8rem);
+      font-weight: 800;
       text-align: center;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      text-shadow: 2px 2px 14px rgba(0, 0, 0, 0.8);
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      letter-spacing: 0.04em;
     }
 
     .heart {
@@ -180,6 +260,7 @@
       pointer-events: none;
       z-index: 9998;
       animation: confetti-fall 3s ease-in forwards;
+      font-size: 22px;
     }
 
     @keyframes confetti-fall {
@@ -195,30 +276,30 @@
 
     .floating-hearts {
       position: absolute;
-      font-size: 40px;
+      font-size: 24px;
       animation: float 2s infinite ease-in-out;
+      opacity: 0.9;
+      z-index: 0;
     }
 
     @keyframes float {
       0%, 100% {
-        transform: translateY(0px);
+        transform: translateY(0px) scale(1);
       }
       50% {
-        transform: translateY(-20px);
+        transform: translateY(-18px) scale(1.08);
       }
     }
 
     .heart-left {
-      position: absolute;
-      left: 40px;
-      top: 50%;
+      left: 8px;
+      top: 52%;
       transform: translateY(-50%);
     }
 
     .heart-right {
-      position: absolute;
-      right: 40px;
-      top: 50%;
+      right: 8px;
+      top: 52%;
       transform: translateY(-50%);
     }
   </style>
@@ -231,9 +312,10 @@
     </div>
 
     <div class="message">
-      Will you marry me?
-      <div class="floating-hearts heart-left">❤️</div>
-      <div class="floating-hearts heart-right">❤️</div>
+      <span class="message-line">Karishma Agrawal,<br>will you marry me?</span>
+      <span class="subtitle">Aakash Krishana loves you forever ❤️</span>
+      <div class="floating-hearts heart-left">💖</div>
+      <div class="floating-hearts heart-right">💖</div>
     </div>
 
     <div class="elephant right">
@@ -242,8 +324,8 @@
     </div>
 
     <div class="buttons">
-      <button class="yes" onclick="answerYes()">Yes</button>
-      <button class="no" onclick="answerNo()">No</button>
+      <button class="yes" onclick="answerYes()">Yes, forever 💍</button>
+      <button class="no" onclick="answerNo()">Maybe later 😘</button>
     </div>
   </div>
 
@@ -263,35 +345,38 @@
   <script>
     function playSong(songId) {
       const audio = document.getElementById(songId);
-      audio.currentTime = 0;
-      audio.play();
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      }
     }
 
     function createConfetti() {
-      for (let i = 0; i < 50; i++) {
+      const pieces = ['🎉', '💖', '💍', '✨'];
+      for (let i = 0; i < 60; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
-        confetti.innerHTML = '🎉';
+        confetti.innerHTML = pieces[i % pieces.length];
         confetti.style.left = Math.random() * window.innerWidth + 'px';
         confetti.style.top = '-10px';
-        confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+        confetti.style.setProperty('--tx', (Math.random() - 0.5) * 220 + 'px');
         confetti.style.setProperty('--rotate', Math.random() * 720 + 'deg');
         document.body.appendChild(confetti);
-        
+
         setTimeout(() => confetti.remove(), 3000);
       }
     }
 
     function createHearts() {
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 25; i++) {
         const heart = document.createElement('div');
         heart.className = 'heart';
-        heart.innerHTML = '❤️';
+        heart.innerHTML = i % 2 === 0 ? '💗' : '❤️';
         heart.style.left = Math.random() * window.innerWidth + 'px';
         heart.style.top = Math.random() * window.innerHeight + 'px';
-        heart.style.setProperty('--tx', (Math.random() - 0.5) * 150 + 'px');
+        heart.style.setProperty('--tx', (Math.random() - 0.5) * 180 + 'px');
         document.body.appendChild(heart);
-        
+
         setTimeout(() => heart.remove(), 3000);
       }
     }
@@ -300,19 +385,31 @@
       playSong('yesAudio');
       createConfetti();
       createHearts();
+
+      const message = document.querySelector('.message-line');
+      message.innerHTML = 'You just made my heart full!';
+
+      setTimeout(() => {
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const fullscreenImg = document.getElementById('fullscreenImg');
+        fullscreenImg.src = '470582388_3005490699599031_4750410066941216994_n.jpg';
+        fullscreenImage.style.display = 'flex';
+      }, 3000);
     }
 
     function answerNo() {
       playSong('noAudio');
+      const message = document.querySelector('.message-line');
+      const subtitle = document.querySelector('.subtitle');
+      message.innerHTML = 'I already chose you';
+      subtitle.textContent = 'And I will keep loving you forever 💞';
+
       setTimeout(() => {
-        alert("Too bad, we're already married.");
-        setTimeout(() => {
-          const fullscreenImage = document.getElementById('fullscreenImage');
-          const fullscreenImg = document.getElementById('fullscreenImg');
-          fullscreenImg.src = 'https://raw.githubusercontent.com/aakashkrishana/Marry-Me/main/470582388_3005490699599031_4750410066941216994_n.jpg';
-          fullscreenImage.style.display = 'flex';
-        }, 500);
-      }, 80);
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const fullscreenImg = document.getElementById('fullscreenImg');
+        fullscreenImg.src = '470582388_3005490699599031_4750410066941216994_n.jpg';
+        fullscreenImage.style.display = 'flex';
+      }, 3000);
     }
   </script>
 </body>
